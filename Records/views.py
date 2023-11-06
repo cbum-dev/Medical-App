@@ -67,8 +67,10 @@ class UserAppointmentsListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        user = self.request.user.user 
+        print(user)
         # Filter appointments based on the user's ID from the bearer token
-        return Appointment.objects.filter(user=self.request.user.user)
+        return Appointment.objects.filter(user=user)
     
 class UpcomingAppointmentsView(generics.ListAPIView):
     queryset = Appointment.objects.all()
@@ -79,10 +81,19 @@ class UpcomingAppointmentsView(generics.ListAPIView):
     def get_queryset(self):
         return Appointment.objects.filter(user=self.request.user.user, appointment_datetime__gt=timezone.now())
 
-class ProviderAppointmentsView(generics.ListAPIView):
-    queryset = Appointment.objects.all()
+# class ProviderAppointmentsView(generics.ListAPIView):
+#     queryset = Appointment.objects.all()
 
+#     serializer_class = AppointmentSerializer
+#     permission_classes = [IsAuthenticated]
+#     def get_queryset(self):
+#         return Appointment.objects.filter(healthcare_provider = self.request.user.healthcareprovider)
+
+class ProviderAppointmentsView(generics.ListAPIView):
     serializer_class = AppointmentSerializer
     permission_classes = [IsAuthenticated]
+
     def get_queryset(self):
-        return Appointment.objects.filter(healthcare_provider = self.request.healthcare_provider.user.user)
+        provider = self.request.user.healthcareprovider 
+        print(provider) # Get the healthcare provider associated with the authenticated user
+        return Appointment.objects.filter(healthcare_provider=provider)
