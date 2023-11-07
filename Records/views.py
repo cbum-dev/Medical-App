@@ -55,10 +55,21 @@ from .models import Appointment
 from .serializers import AppointmentSerializer
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
-
+from django.core.mail import send_mail
 class AppointmentListCreateView(generics.ListCreateAPIView):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
+    def perform_create(self, serializer):
+        # Call the serializer's save method to create the appointment
+        appointment = serializer.save()
+
+        # Send an email to the user
+        subject = 'Appointment Confirmation'
+        message = f'Your appointment with {appointment.healthcare_provider.name} on {appointment.appointment_datetime} has been booked successfully.'
+        from_email = 'your_email@gmail.com'  # Your email address
+        recipient_list = [appointment.user.user.email]  # User's email address
+
+        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
 
 
 class UserAppointmentsListView(generics.ListAPIView):

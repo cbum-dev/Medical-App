@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import User, HealthcareProvider
-from .serializers import UserSerialiser, HealthcareProviderSerializer,HealthcareProviderListBySpecialty
+from .models import User, HealthcareProvider,CustomUser
+from .serializers import UserSerialiser, HealthcareProviderSerializer,HealthcareProviderListBySpecialty,CustomUserSerialiser
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from .permissions import IsOwner
@@ -36,3 +36,7 @@ class UserRetrieveUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerialiser
     permission_classes = [IsAuthenticated, IsOwner]
+
+class CustomUserListCreateView(generics.ListCreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerialiser

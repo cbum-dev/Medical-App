@@ -2,17 +2,23 @@ from rest_framework import serializers
 from .models import HealthcareProvider
 from rest_framework import generics
 from rest_framework import serializers
-from .models import HealthcareProvider, Specialty,User
+from .models import HealthcareProvider, Specialty,User,CustomUser
 
+class CustomUserSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = "__all__"
 class HealthcareproviderSerialiser(serializers.ModelSerializer):
     class Meta:
         model = HealthcareProvider
         fields = "__all__"
 class UserSerialiser(serializers.ModelSerializer):
+    id = serializers.CharField(source='user.id')
+    username = serializers.CharField(source='user.username')
+    email = serializers.CharField(source='user.email')
     class Meta:
         model  = User
-        fields = "__all__"
-
+        fields = ['id','username','name', 'phone', 'email']  
 class SpecialtySerializer(serializers.ModelSerializer):
     class Meta:
         model = Specialty
