@@ -25,7 +25,12 @@ class SpecialtySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class HealthcareProviderSerializer(serializers.ModelSerializer):
-    speciality = SpecialtySerializer(many=True)  # Serialize the specialties
+    speciality = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name'
+    )
+ # Serialize the specialties
 
     class Meta:
         model = HealthcareProvider

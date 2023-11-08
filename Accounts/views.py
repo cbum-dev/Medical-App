@@ -8,8 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class UserListCreateView(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerialiser
+    queryset = HealthcareProvider.objects.all()
+    serializer_class = HealthcareProviderSerializer
 
 class HealthcareProviderListCreateView(generics.ListCreateAPIView):
     queryset = HealthcareProvider.objects.all()

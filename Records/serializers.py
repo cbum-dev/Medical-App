@@ -3,11 +3,18 @@ from .models import Appointment
 from Accounts.models import User,HealthcareProvider
 
 class UserSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(source='user.email')
     class Meta:
         model = User
         fields = "__all__"
 
 class ProviderSerializers(serializers.ModelSerializer):
+    email = serializers.CharField(source='user.email')
+    speciality = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name'
+    )
     class Meta:
         model = HealthcareProvider
         fields = "__all__"
@@ -23,3 +30,5 @@ class appser(serializers.ModelSerializer):
     class Meta:
         model = Appointment
         fields = ['user','healthcare_provider','appointment_datetime']
+
+

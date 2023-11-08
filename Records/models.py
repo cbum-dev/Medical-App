@@ -7,6 +7,7 @@ class Appointment(models.Model):
     healthcare_provider = models.ForeignKey(HealthcareProvider, on_delete=models.CASCADE)
     appointment_datetime = models.DateTimeField()
     is_rescheduled = models.BooleanField(default=False)
+    problem = models.TextField(default="Something wrong with my health")
     
     def is_upcoming(self):
         return self.appointment_datetime > timezone.now()

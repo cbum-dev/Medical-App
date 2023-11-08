@@ -4,6 +4,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
 urlpatterns = [
+    # path('xyz/',views.HealthcareProviderSerializer.as_view(),name = "xyz"),
     path('providers/specialty', views.HealthcareProviderListBySpecialty.as_view(), name='providers-list-by-specialty'),#localhost:8000/provder/?specialty = "joint"
     path('users/', views.UserListCreateView.as_view(), name='user-list-create'),
     path('providers/', views.HealthcareProviderListCreateView.as_view(), name='provider-list-create'),
