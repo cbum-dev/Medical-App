@@ -3,6 +3,7 @@ from Accounts.models import HealthcareProvider,User
 from django.utils import timezone
 
 class Appointment(models.Model):
+    # app_id = models.AutoField(primary_key=False,default=1)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     healthcare_provider = models.ForeignKey(HealthcareProvider, on_delete=models.CASCADE)
     appointment_datetime = models.DateTimeField()
@@ -18,9 +19,9 @@ class Appointment(models.Model):
 
     
 
-class RescheduleHistory(models.Model):
-    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
-    rescheduled_datetime = models.DateTimeField()
+# class RescheduleHistory(models.Model):
+#     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
+#     rescheduled_datetime = models.DateTimeField()
 
 class HealthcareRecord(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)

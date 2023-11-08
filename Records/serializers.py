@@ -26,9 +26,15 @@ class AppointmentSerializer(serializers.ModelSerializer):
         model = Appointment
         fields = '__all__'
 
-class appser(serializers.ModelSerializer):
+class BookAppSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
-        fields = ['user','healthcare_provider','appointment_datetime']
+        fields = ['healthcare_provider','appointment_datetime','problem']
 
+class RescheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = ['appointment-datetime','is_rescheduled']
 
+class AppointmentRescheduleSerializer(serializers.Serializer):
+    new_appointment_datetime = serializers.DateTimeField()
