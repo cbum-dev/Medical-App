@@ -24,6 +24,6 @@ from rest_framework_simplejwt.views import(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('Accounts.urls')),
-    path('api/',include('Records.urls'))
-    
+    path('api/',include('Records.urls')),
+    path('apis/', include('Social.urls')),  # Replace 'api/' with your desired API path
 ]
