@@ -25,5 +25,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('Accounts.urls')),
     path('api/',include('Records.urls')),
-    path('apis/', include('Social.urls')),  # Replace 'api/' with your desired API path
+    path('apis/', include('Socials.urls')),  # Replace 'api/' with your desired API path
 ]
