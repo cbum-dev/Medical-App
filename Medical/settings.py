@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'Accounts',
     'Records',
     'Socials',
-    'rest_framework'
+    'rest_framework',
+    'rest_framework.authtoken',
 
 ]
 

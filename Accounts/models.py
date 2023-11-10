@@ -39,9 +39,7 @@ class HealthcareProvider(models.Model):
 class User(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=100,null=False)
-    # email = models.EmailField(null=False,unique=True)
     phone = models.CharField(max_length=15,null=False,unique=True)
-    # password = models.CharField(max_length=78,default="123")
 
 
 
