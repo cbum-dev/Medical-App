@@ -28,7 +28,6 @@ class UserAppointmentsListView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user.user 
         print(user)
-        # Filter appointments based on the user's ID from the bearer token
         return Appointment.objects.filter(user=user)
     
 class UpcomingAppointmentsView(generics.ListAPIView):

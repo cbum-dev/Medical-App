@@ -17,6 +17,8 @@ class BlogLikeSerializer(serializers.ModelSerializer):
 
 class BlogSerializer(serializers.ModelSerializer):
     likes_count = serializers.SerializerMethodField()
+    author = CustomUserSerialiser()
+
     # liked_by = BlogLikeSerializer(many=True, read_only=True)
 
     class Meta:

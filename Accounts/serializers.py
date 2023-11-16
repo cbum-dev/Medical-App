@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 from rest_framework import serializers
 from .models import HealthcareProvider
 from rest_framework import generics
@@ -89,3 +90,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user_profile = User(user=user, **validated_data)
         user_profile.save()
         return user_profile
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True)

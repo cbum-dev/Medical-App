@@ -34,6 +34,7 @@ class HealthcareProvider(models.Model):
     phone = models.CharField(max_length=15,unique=True,null=False)
     address = models.CharField(max_length=100,null=False,default="Not Specified.")
     speciality = models.ManyToManyField(Specialty)
+    fees = models.IntegerField(default=1200)
 
 
 class User(models.Model):
