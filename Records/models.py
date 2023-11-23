@@ -22,8 +22,10 @@ class Appointment(models.Model):
 # class RescheduleHistory(models.Model):
 #     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
 #     rescheduled_datetime = models.DateTimeField()
-
+def healthcare_record_image_path(instance, filename):
+    # This function defines the upload path for the images
+    return f'healthcare_records/user_{instance.user}/{filename}'
 class HealthcareRecord(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     healthcare_provider = models.ForeignKey(HealthcareProvider, on_delete=models.CASCADE)
-    report = models.ImageField()
+    report = models.ImageField(upload_to=healthcare_record_image_path)

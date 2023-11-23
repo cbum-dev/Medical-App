@@ -27,3 +27,8 @@ urlpatterns = [
     path('api/',include('Records.urls')),
     path('apis/', include('Socials.urls')),  # Replace 'api/' with your desired API path
 ]
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

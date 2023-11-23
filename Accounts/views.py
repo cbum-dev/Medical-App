@@ -2,7 +2,6 @@ from rest_framework import generics
 from .models import User, HealthcareProvider,CustomUser
 from .serializers import UserSerialiser, HealthcareProviderSerializer,HealthcareProviderListBySpecialty,CustomUserSerialiser
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-
 from .permissions import IsOwner
 from rest_framework.permissions import IsAuthenticated
 
@@ -10,12 +9,23 @@ from rest_framework.permissions import IsAuthenticated
 class UserListCreateView(generics.ListCreateAPIView):
     queryset = HealthcareProvider.objects.all()
     serializer_class = HealthcareProviderSerializer
+    
+
 
 class HealthcareProviderListCreateView(generics.ListCreateAPIView):
-    queryset = HealthcareProvider.objects.all()
     serializer_class = HealthcareProviderSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+    def get_queryset(self):
+        # Check if 'pk' (primary key) is present in the URL parameters
+        provider_id = self.kwargs.get('pk')
+
+        if provider_id:
+            # Return a single provider if 'pk' is present
+            return HealthcareProvider.objects.filter(pk=provider_id)
+        else:
+            # Return all providers if 'pk' is not present
+            return HealthcareProvider.objects.all()
 class NHealthcareProviderListBySpecialty(generics.ListAPIView):
     serializer_class = HealthcareProviderSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -36,6 +46,7 @@ class UserRetrieveUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerialiser
     permission_classes = [IsAuthenticated, IsOwner]
+
 
 class CustomUserListCreateView(generics.ListCreateAPIView):
     queryset = CustomUser.objects.all()
@@ -185,5 +196,6 @@ class HomeView(APIView):
      
    permission_classes = (IsAuthenticated, )   
    def get(self, request):
-        content = {'message': 'Welcome to the JWT Authentication page using React Js and Django!'}   
-        return Response(content)
+        user = request.user
+        content = {'message': user.id}   
+        return JsonResponse(content)

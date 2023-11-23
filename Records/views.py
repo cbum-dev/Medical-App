@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import Appointment
-from .serializers import AppointmentSerializer,BookAppSerializer
+from .models import Appointment,HealthcareRecord
+from .serializers import AppointmentSerializer,BookAppSerializer,HealthCareRecordSerializer
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from django.core.mail import send_mail
@@ -32,10 +32,8 @@ class UserAppointmentsListView(generics.ListAPIView):
     
 class UpcomingAppointmentsView(generics.ListAPIView):
     queryset = Appointment.objects.all()
-
     serializer_class = AppointmentSerializer
     permission_classes = [IsAuthenticated]
-
     def get_queryset(self):
         return Appointment.objects.filter(user=self.request.user.user, appointment_datetime__gt=timezone.now())
 
@@ -84,3 +82,8 @@ class AppointmentRescheduleView(generics.UpdateAPIView):
         appointment.save()
 
         return Response({'detail': 'Appointment rescheduled successfully.'})
+
+class RecordsView(generics.ListCreateAPIView):
+    queryset = HealthcareRecord.objects.all()
+    serializer_class = HealthCareRecordSerializer
+    

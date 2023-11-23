@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Appointment
+from .models import Appointment,HealthcareRecord
 from Accounts.models import User,HealthcareProvider
 
 class UserSerializer(serializers.ModelSerializer):
@@ -38,3 +38,10 @@ class RescheduleSerializer(serializers.ModelSerializer):
 
 class AppointmentRescheduleSerializer(serializers.Serializer):
     new_appointment_datetime = serializers.DateTimeField()
+
+class HealthCareRecordSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    healthcare_provider = ProviderSerializers()
+    class Meta:
+        model = HealthcareRecord
+        fields = "__all__"
