@@ -93,3 +93,24 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
+
+
+
+# serializers.py
+from rest_framework import serializers
+from .models import CustomUser, HealthcareProvider, User
+
+class ACustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'email','password']
+
+class AHealthcareProviderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HealthcareProvider
+        fields = '__all__'
+
+class AUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['name', 'phone', 'about']

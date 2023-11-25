@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import User, HealthcareProvider,CustomUser
-from .serializers import UserSerialiser, HealthcareProviderSerializer,HealthcareProviderListBySpecialty,CustomUserSerialiser
+from .models import User, HealthcareProvider,CustomUser,Specialty
+from .serializers import UserSerialiser, HealthcareProviderSerializer,SpecialtySerializer,CustomUserSerialiser
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import IsOwner
 from rest_framework.permissions import IsAuthenticated
@@ -26,15 +26,20 @@ class HealthcareProviderListCreateView(generics.ListCreateAPIView):
         else:
             # Return all providers if 'pk' is not present
             return HealthcareProvider.objects.all()
-class NHealthcareProviderListBySpecialty(generics.ListAPIView):
-    serializer_class = HealthcareProviderSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
-    def get_queryset(self):
-        specialty = self.request.query_params.get('specialty')
-        queryset = HealthcareProvider.objects.filter(speciality__name=specialty)
+class HealthcareProviderBySpecialtyView(APIView):
+    def get(self, request, specialty_id):
+        try:
+            specialty = Specialty.objects.get(pk=specialty_id)
+            providers = HealthcareProvider.objects.filter(speciality=specialty)
+            serializer = HealthcareProviderSerializer(providers, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Specialty.DoesNotExist:
+            return Response({"error": "Specialty not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        return queryset
 
 class HealthcareProviderUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = HealthcareProvider.objects.all()
@@ -72,20 +77,20 @@ class RegistrationView(generics.CreateAPIView):
 
 
 # views.py
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED
-from .serializers import UserRegistrationSerializer
+# from rest_framework import generics
+# from rest_framework.response import Response
+# from rest_framework.status import HTTP_201_CREATED
+# from .serializers import UserRegistrationSerializer
 
-class UserRegistrationView(generics.CreateAPIView):
-    serializer_class = UserRegistrationSerializer
+# class UserRegistrationView(generics.CreateAPIView):
+#     serializer_class = UserRegistrationSerializer
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=HTTP_201_CREATED, headers=headers)
+#     def create(self, request, *args, **kwargs):
+#         serializer = self.get_serializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         self.perform_create(serializer)
+#         headers = self.get_success_headers(serializer.data)
+#         return Response(serializer.data, status=HTTP_201_CREATED, headers=headers)
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import get_user_model
 
@@ -199,3 +204,63 @@ class HomeView(APIView):
         user = request.user
         content = {'message': user.id}   
         return JsonResponse(content)
+
+
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_user_role(request):
+    user = request.user
+
+    if hasattr(user, 'healthcareprovider'):
+        role = 'healthcare_provider'
+    elif hasattr(user, 'user'):
+        role = 'normal_user'
+    else:
+        role = 'unknown'
+
+    return Response({'role': role})
+
+
+
+#################################KKKKKKKKKKKKKKKKKKKKK
+# views.py
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+from .models import CustomUser, HealthcareProvider, User
+from .serializers import ACustomUserSerializer,AUserSerializer,AHealthcareProviderSerializer
+class UserRegistrationView(generics.CreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = ACustomUserSerializer
+class BasicUserRegistration(generics.CreateAPIView):
+    serializer_class = AUserSerializer
+
+    def perform_create(self, serializer):
+        # Access the authenticated user from the request
+        user = self.request.user
+        print(user.id)
+        # Check if the user is an instance of CustomUser
+        if user.is_authenticated and hasattr(user, 'customuser'):
+            # Set the user field in the serializer to the authenticated user
+            serializer.save(user=user.id)
+        else:
+            # Handle the case where the user is not authenticated or not a CustomUser
+            # You may want to raise an exception or handle it according to your requirements
+            pass
+
+class ProviderRegistration(generics.CreateAPIView):
+    queryset = HealthcareProvider.objects.all()
+    serializer_class = AHealthcareProviderSerializer
+
+
+class SpecialityView(APIView):
+    def get(self, request):
+        specialties = Specialty.objects.all()
+        serializer = SpecialtySerializer(specialties, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

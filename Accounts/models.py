@@ -41,3 +41,5 @@ class User(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=100,null=False)
     phone = models.CharField(max_length=15,null=False,unique=True)
+    about = models.TextField(default="")
+

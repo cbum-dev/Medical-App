@@ -8,11 +8,17 @@ urlpatterns = [
      path('home/', views.HomeView.as_view(), name ='home'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
-    
-    # path('providers/specialty', views.HealthcareProviderListBySpecialty.as_view(), name='providers-list-by-specialty'),#localhost:8000/provder/?specialty = "joint"
-    path('users/', views.UserListCreateView.as_view(), name='user-list-create'),
+    path('check/', views.check_user_role, name='check_user_role'),
+    path('providers/speciality/<int:specialty_id>/', views.HealthcareProviderBySpecialtyView.as_view(), name='providers-by-specialty'),    path('users/', views.UserListCreateView.as_view(), name='user-list-create'),
     path('providers/', views.HealthcareProviderListCreateView.as_view(), name='provider-list'),
     path('providers/<int:pk>/', views.HealthcareProviderListCreateView.as_view(), name='provider-detail'),
+
+
+    path('register/user/', views.UserRegistrationView.as_view(), name='user-register'),
+    path('register/user/basic/', views.BasicUserRegistration.as_view(), name='user-register'),
+    path('register/provider/', views.ProviderRegistration.as_view(), name='healthcare-provider-register'),
+    path('speciality/', views.SpecialityView.as_view(), name='speciality'),
+
 
     # path('providers/<int:pk>/', views.HealthcareProviderUpdateDeleteView.as_view(), name='provider-update-delete'),
     path('users/<int:pk>/',views.UserRetrieveUpdateView.as_view(),name = "user"),
