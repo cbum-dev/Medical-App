@@ -28,4 +28,5 @@ def healthcare_record_image_path(instance, filename):
 class HealthcareRecord(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     healthcare_provider = models.ForeignKey(HealthcareProvider, on_delete=models.CASCADE)
-    report = models.ImageField(upload_to=healthcare_record_image_path)
+    # report = models.ImageField(upload_to=healthcare_record_image_path)
+    report = models.FileField(upload_to='pdfs/', default='pdfs/default.pdf')

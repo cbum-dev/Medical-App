@@ -27,17 +27,6 @@ class BlogLikeViewSet(viewsets.ModelViewSet):
     queryset = BlogLike.objects.all()
     serializer_class = BlogLikeSerializer
 
-# class BlogDetailView(generics.RetrieveAPIView):
-#     queryset = Blog.objects.all()
-#     serializer_class = BlogSerializer
-
-#     def get(self, request, *args, **kwargs):
-#         # Check some condition to determine whether to show full content
-#         show_full_content = request.query_params.get('show_full_content', False)
-
-#         serializer = self.get_serializer(self.get_object(), context={'show_full_content': show_full_content})
-#         return Response(serializer.data)
-
 
 class FullBlog(generics.RetrieveAPIView):
     queryset = Blog.objects.all()
@@ -46,3 +35,11 @@ class FullBlog(generics.RetrieveAPIView):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+
+class BlogLike(generics.CreateAPIView):
+    serializer_class = BlogLikeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Set the user from the JWT
+        serializer.save(user=self.request.user, blog_id=self.kwargs['blog_id'])

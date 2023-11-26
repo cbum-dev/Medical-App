@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import BlogCreate,BlogView,BlogUpdate,FullBlog
+from .views import BlogCreate,BlogView,BlogUpdate,FullBlog,BlogLike
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -9,6 +9,8 @@ urlpatterns = [
     path('', include(router.urls)),
     path('update/<int:pk>/',BlogUpdate.as_view()),
     path('full/<int:pk>/',FullBlog.as_view()),
+    path('like/<int:blog_id>/',BlogLike.as_view()),
+
     # path('full/<int:pk>/',BlogDetailView.as_view())        #Feature
     
 

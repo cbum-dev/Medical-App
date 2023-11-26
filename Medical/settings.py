@@ -155,3 +155,5 @@ CORS_ALLOWED_ORIGINS = [
 # Optional: Allow credentials (cookies, authorization headers, etc.)
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"

@@ -9,11 +9,10 @@ class CustomUserSerialiser(serializers.ModelSerializer):
         model = CustomUser
         fields = ['id','username','email']
 class BlogLikeSerializer(serializers.ModelSerializer):
-    user = CustomUserSerialiser()
+    # user = CustomUserSerialiser()
     class Meta:
         model = BlogLike
-        fields = ['user']
-
+        exclude = ['user','blog']
 class BlogSerializer(serializers.ModelSerializer):
     likes_count = serializers.SerializerMethodField()
     author = CustomUserSerialiser()

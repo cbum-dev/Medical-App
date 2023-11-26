@@ -239,24 +239,27 @@ class UserRegistrationView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = ACustomUserSerializer
 class BasicUserRegistration(generics.CreateAPIView):
+    queryset = HealthcareProvider.objects.all()
     serializer_class = AUserSerializer
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        # Access the authenticated user from the request
         user = self.request.user
         print(user.id)
-        # Check if the user is an instance of CustomUser
-        if user.is_authenticated and hasattr(user, 'customuser'):
-            # Set the user field in the serializer to the authenticated user
-            serializer.save(user=user.id)
-        else:
-            # Handle the case where the user is not authenticated or not a CustomUser
-            # You may want to raise an exception or handle it according to your requirements
-            pass
+        if user.is_authenticated:
+            serializer.save(user=user)
+        else:   pass
 
 class ProviderRegistration(generics.CreateAPIView):
     queryset = HealthcareProvider.objects.all()
     serializer_class = AHealthcareProviderSerializer
+    permission_classes = [IsAuthenticated]
+    def perform_create(self, serializer):
+        user = self.request.user
+        print(user.id)
+        if user.is_authenticated:
+            serializer.save(user=user)
+        else: pass
 
 
 class SpecialityView(APIView):

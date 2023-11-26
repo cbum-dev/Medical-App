@@ -108,7 +108,7 @@ class ACustomUserSerializer(serializers.ModelSerializer):
 class AHealthcareProviderSerializer(serializers.ModelSerializer):
     class Meta:
         model = HealthcareProvider
-        fields = '__all__'
+        exclude = ['user']
 
 class AUserSerializer(serializers.ModelSerializer):
     class Meta:
