@@ -142,51 +142,6 @@ class LoginView(APIView):
 
 
 
-import json
-from jose import jwt
-from django.http import JsonResponse
-
-def get_user_id_from_jwt(jwt_token, secret_key):
-    try:
-        # Decode the JWT token
-        decoded_token = jwt.decode(jwt_token, secret_key, algorithms=['HS256'])
-        # Assuming the user ID is stored in the 'user_id' claim of the JWT
-        user_id = decoded_token.get('user_id')
-        return user_id
-    except jwt.ExpiredSignatureError:
-        # Handle token expiration
-        return None
-    except jwt.DecodeError:
-        # Handle other JWT errors
-        return None
-    
-
-from .serializers import LoginSerializer
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed
-import jwt, datetime
-
-from django.http import JsonResponse
-
-def some_protected_view(request):
-    # Retrieve the 'jwt' cookie from the request.COOKIES dictionary
-    jwt_cookie = request.COOKIES.get('jwt')
-    secret_key = 'your_secret_key'  # Replace with your actual secret key
-
-    if jwt_cookie:
-        # Extract user ID from the JWT
-        user_id = get_user_id_from_jwt(jwt_cookie, secret_key)
-
-        if user_id:
-            # User ID is successfully retrieved
-            return JsonResponse({'user_id': user_id})
-        else:
-            # Failed to decode JWT or handle expiration
-            return JsonResponse({'error': 'Invalid or expired token'}, status=401)
-    else:
-        # If 'jwt' cookie is not present, return an error response
-        return JsonResponse({'error': 'Unauthorized'}, status=401)
 class LogoutView(APIView):
         permission_classes = (IsAuthenticated,)     
         def post(self, request):
@@ -197,14 +152,6 @@ class LogoutView(APIView):
                 return Response(status=status.HTTP_205_RESET_CONTENT)          
             except Exception as e:               
                 return Response(status=status.HTTP_400_BAD_REQUEST)
-class HomeView(APIView):
-     
-   permission_classes = (IsAuthenticated, )   
-   def get(self, request):
-        user = request.user
-        content = {'message': user.id}   
-        return JsonResponse(content)
-
 
 
 from rest_framework.decorators import api_view, permission_classes
