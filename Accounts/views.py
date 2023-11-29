@@ -242,7 +242,6 @@ class BasicUserRegistration(generics.CreateAPIView):
     queryset = HealthcareProvider.objects.all()
     serializer_class = AUserSerializer
     permission_classes = [IsAuthenticated]
-
     def perform_create(self, serializer):
         user = self.request.user
         print(user.id)

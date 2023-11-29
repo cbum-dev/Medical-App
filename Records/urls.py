@@ -8,5 +8,5 @@ urlpatterns = [
     path('appointments/provider/', views.ProviderAppointmentsView.as_view(), name='provider-appointments'),  #done
     path('upcoming/', views.UpcomingAppointmentsView.as_view(), name='upcoming-appointments'), #done
     path('appointments/', views.AppointmentListCreateView.as_view(), name='appointment-list-create'), #discarded
-    path('myappointments/', views.UserAppointmentsListView.as_view(), name='user-appointments'),#specific users appointment
+    path('myappointments/', views.UserAppointmentsListView.as_view(), name='user-appointments'),#specific users appointment #done
 ]
