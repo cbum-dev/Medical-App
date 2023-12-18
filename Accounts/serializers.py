@@ -62,14 +62,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-
-
-# serializers.py
 from rest_framework import serializers
 from .models import User
 from django.contrib.auth.hashers import make_password
 
-# serializers.py
 from rest_framework import serializers
 from .models import User
 from django.contrib.auth.hashers import make_password

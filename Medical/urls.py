@@ -20,8 +20,11 @@ from rest_framework_simplejwt.views import(
     TokenObtainPairView,
     TokenRefreshView,
 )
+from django.views.generic import TemplateView
+
 
 urlpatterns = [
+    path('v/', TemplateView.as_view(template_name='index.html')),
     path('admin/', admin.site.urls),
     path('',include('Accounts.urls')),
     path('api/',include('Records.urls')),
