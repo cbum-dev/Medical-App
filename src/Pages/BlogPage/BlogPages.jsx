@@ -1,4 +1,3 @@
-// Your main component (e.g., BlogPage.js)
 import React from "react";
 import axios from "axios";
 import BlogForm from "./BlogForm";
@@ -10,18 +9,19 @@ const BlogPage = () => {
       window.location.href = "/login";
     } else {
       try {
-        // Make a POST request to your API endpoint
-        await axios.post("http://localhost:8000/apis/blogs/create/", blogData, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        });
+        await axios.post(
+          "https://medi-dep-bykw.vercel.app/apis/blogs/create/",
+          blogData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
 
-        // Optionally, you can redirect or perform other actions after successful creation
         alert("Blog created successfully");
-        window.location.href = "/blog"
-
+        window.location.href = "/blog";
       } catch (error) {
         console.error("Error creating blog:", error);
       }
@@ -29,8 +29,8 @@ const BlogPage = () => {
   };
 
   return (
-    <div>
-      <h2>Create a New Blog</h2>
+    <div className="text-white px-2 d-flex flex-column align-items-center vh-100">
+      <h2 className="mx-2 mb-3 mt-3 display-6 text-white">Create a New Blog</h2>
       <BlogForm onSubmit={handleCreateBlog} />
     </div>
   );

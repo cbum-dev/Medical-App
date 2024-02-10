@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import BlogContainer from './FullBlog';  // Assuming you have a BlogContainer component
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import BlogContainer from "./FullBlog";
+import { useParams } from "react-router-dom";
 
 const FullBlog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -10,10 +10,12 @@ const FullBlog = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/apis/full/${blogId}/`);
-        setBlogs([response.data]);  // Wrap the response data in an array
+        const response = await axios.get(
+          `https://medi-dep-bykw.vercel.app/apis/full/${blogId}/`
+        );
+        setBlogs([response.data]);
       } catch (error) {
-        console.error('Error fetching Blog Data:', error);
+        console.error("Error fetching Blog Data:", error);
       }
     };
 
@@ -21,9 +23,9 @@ const FullBlog = () => {
   }, [blogId]);
 
   return (
-    <div>
+    <div className="px-2 d-flex flex-column align-items-center">
       <div className="card-container">
-        {blogs.map(blog => (
+        {blogs.map((blog) => (
           <BlogContainer key={blog.id} blog={blog} />
         ))}
       </div>

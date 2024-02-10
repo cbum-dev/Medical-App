@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { HeartFill } from "react-bootstrap-icons";
 import axios from "axios";
+import { Card, Spinner } from "react-bootstrap";
 
 const BlogCard = ({ blog }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(blog.likes_count);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(delay);
+  }, []);
 
   const handleLike = async () => {
     try {
@@ -17,7 +27,7 @@ const BlogCard = ({ blog }) => {
       }
 
       await axios.post(
-        `http://localhost:8000/apis/like/${blog.id}/`,
+        `https://medi-dep-bykw.vercel.app/apis/like/${blog.id}/`,
         {},
         {
           headers: {
@@ -33,46 +43,48 @@ const BlogCard = ({ blog }) => {
     }
   };
 
+  if (loading) {
+    return (
+      <Card className="mb-3 mx-2 my-2 border-gradient-secondary border-2">
+        <Card.Body>
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+          <span className="ms-2">Loading Blog...</span>
+        </Card.Body>
+      </Card>
+    );
+  }
+
   return (
-    <div className="card mb-3 ">
-      <div className="card-header">
+    <Card className="mb-3 mx-2 my-2 border-gradient-secondary border-2">
+      <Card.Header className="bg-light text-dark">
         <div className="d-flex align-items-center">
-          <img
-            className="rounded-circle me-2"
-            src="https://images.unsplash.com/photo-1699920238877-35a0b75ae673?w=50&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1Mnx8fGVufDB8fHx8fA%3D%3D"
-            alt=""
-          />
           <div className="Author">
             <span className="fw-bold">{blog.author.username}</span>
             <br />
             <span>{blog.author.email}</span>
           </div>
         </div>
-      </div>
-      <div className="card-body">
+      </Card.Header>
+      <Card.Body>
         <h5 className="card-title">{blog.title}</h5>
-        <p className="card-text">{blog.content}...Read More!!</p>
-      </div>
-      <div className="card-footer d-flex justify-content-between">
-        <div className="d-flex">
-          <Link to={`/blog/del/${blog.id}`} className="btn btn-danger me-2">
-            Delete
-          </Link>
-          <Link to={`/blog/update/${blog.id}`} className="btn btn-warning">
-            Update
-          </Link>
-        </div>
-        <div className="d-flex align-items-center">
-          <Link to={`/blog/${blog.id}`} className="btn btn-primary me-2">
-            Read Full Blog
-          </Link>
-          <button className="btn btn-outline-danger" onClick={handleLike} disabled={isLiked}>
-            <HeartFill color={isLiked ? "crimson" : "black"} />
-            <span className="ms-1">{likesCount}</span>
-          </button>
-        </div>
-      </div>
-    </div>
+        <p className="card-text">{blog.content} ...Read More!!</p>
+      </Card.Body>
+      <Card.Footer className="bg-light d-flex justify-content-end">
+        <Link to={`/blog/${blog.id}`} className="btn py-2 btn-primary px-2 py-0">
+          Read Full Blog
+        </Link>
+        <button
+          className="btn btn-outline-danger ms-2 px-2 py-0"
+          onClick={handleLike}
+          disabled={isLiked}
+        >
+          <HeartFill color={isLiked ? "crimson" : "black"} size={20} />
+          <span className="ms-1">{likesCount}</span>
+        </button>
+      </Card.Footer>
+    </Card>
   );
 };
 

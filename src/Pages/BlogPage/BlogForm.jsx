@@ -1,9 +1,8 @@
-// BlogForm.js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const BlogForm = ({ onSubmit }) => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -11,7 +10,7 @@ const BlogForm = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="mx-3 w-100" onSubmit={handleSubmit}>
       <div className="mb-3">
         <label htmlFor="title" className="form-label">
           Title:

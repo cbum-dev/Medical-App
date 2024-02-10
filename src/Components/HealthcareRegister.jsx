@@ -1,56 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const HealthcareProviderForm = () => {
-  const [name, setName] = useState('');
-  const [experience, setExperience] = useState('');
-  const [education, setEducation] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
+  const [name, setName] = useState("");
+  const [experience, setExperience] = useState("");
+  const [education, setEducation] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [fees, setFees] = useState(1200);
-  const [about, setAbout] = useState('');
+  const [about, setAbout] = useState("");
   const [specialities, setSpecialities] = useState([]);
   const [allSpecialities, setAllSpecialities] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch all specialities
     const fetchSpecialities = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/speciality/');
+        const response = await axios.get(
+          "https://medi-dep-bykw.vercel.app/speciality/"
+        );
         setAllSpecialities(response.data);
       } catch (error) {
-        setError(error.message || 'Error fetching specialities');
+        setError(error.message || "Error fetching specialities");
       }
     };
 
     fetchSpecialities();
   }, []);
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Update user data using a POST request
-      await axios.post('http://localhost:8000/register/provider/', {
-        name,
-        experience,
-        education,
-        phone,
-        address,
-        fees,
-        about,
-        speciality: specialities.map(spec => spec.id),
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      await axios.post(
+        "https://medi-dep-bykw.vercel.app/register/provider/",
+        {
+          name,
+          experience,
+          education,
+          phone,
+          address,
+          fees,
+          about,
+          speciality: specialities.map((spec) => spec.id),
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
 
-      // Optionally, you can handle success, e.g., redirect to another page
     } catch (error) {
-      setError(error.message || 'Error updating user data');
+      setError(error.message || "Error updating user data");
     }
   };
 
@@ -146,16 +148,18 @@ const HealthcareProviderForm = () => {
             id="specialities"
             className="form-control"
             multiple
-            value={specialities.map(spec => spec.id)}
-            onChange={(e) => handleSpecialitiesChange(
-              Array.from(e.target.selectedOptions, option => ({
-                id: option.value,
-                name: option.label,
-              }))
-            )}
+            value={specialities.map((spec) => spec.id)}
+            onChange={(e) =>
+              handleSpecialitiesChange(
+                Array.from(e.target.selectedOptions, (option) => ({
+                  id: option.value,
+                  name: option.label,
+                }))
+              )
+            }
             required
           >
-            {allSpecialities.map(spec => (
+            {allSpecialities.map((spec) => (
               <option key={spec.id} value={spec.id}>
                 {spec.name}
               </option>

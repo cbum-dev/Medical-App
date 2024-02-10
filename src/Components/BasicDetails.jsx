@@ -1,41 +1,43 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 const UserProfileForm = () => {
-  const [name, setName] = useState('');
-  const [about, setAbout] = useState('');
-  const [phone, setPhone] = useState('');
+  const [name, setName] = useState("");
+  const [about, setAbout] = useState("");
+  const [phone, setPhone] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Update user data using a POST request
-      await axios.post('http://localhost:8000/register/user/basic/', {
-        name,
-        about,
-        phone,
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      await axios.post(
+        "https://medi-dep-bykw.vercel.app/register/user/basic/",
+        {
+          name,
+          about,
+          phone,
         },
-      });
-      window.location.href = "//"
-      // Optionally, you can handle success, e.g., redirect to another page
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+      window.location.href = "/";
     } catch (error) {
-      setError(error.message || 'Error updating user data');
+      console.error("Error updating user data");
     }
   };
 
   return (
     <div className="container mt-5">
-      <h2>Fill This Form For Furthur Actions.</h2>
+      <h2 className="mb-3">Fill This Form For Furthur Actions.</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input
             type="text"
-            className="form-control"
+            className="form-control mb-2"
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -45,7 +47,7 @@ const UserProfileForm = () => {
         <div className="form-group">
           <label htmlFor="about">About</label>
           <textarea
-            className="form-control"
+            className="form-control mb-2"
             id="about"
             value={about}
             onChange={(e) => setAbout(e.target.value)}
@@ -53,7 +55,7 @@ const UserProfileForm = () => {
             required
           ></textarea>
         </div>
-        <div className="form-group">
+        <div className="form-group mb-3">
           <label htmlFor="phone">Phone</label>
           <input
             type="text"
@@ -65,7 +67,7 @@ const UserProfileForm = () => {
           />
         </div>
         <button type="submit" className="btn btn-primary">
-          Update Profile
+          Complete Profile
         </button>
       </form>
     </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const RegistrationForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/register/user/",
+        "https://medi-dep-bykw.vercel.app/register/user/",
         {
           username,
           email,
@@ -22,18 +22,17 @@ const RegistrationForm = () => {
       );
 
       console.log("Registration successful:", response.data);
-      navigate("/register/user/basic");
+      navigate("/login");
     } catch (error) {
       console.error("Registration failed:", error.response.data);
-      // Handle error, show error message, etc.
     }
   };
 
   return (
     <div className="container mt-5">
-      <h2>Register User</h2>
+      <h2 className="mb-3">Register User</h2>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div className="form-group mb-3">
           <label htmlFor="username text-dark">Username</label>
           <input
             type="text"
@@ -44,7 +43,7 @@ const RegistrationForm = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="form-group mb-3">
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -55,7 +54,7 @@ const RegistrationForm = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="form-group mb-3">
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -66,10 +65,19 @@ const RegistrationForm = () => {
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary mb-3">
           Register
         </button>
       </form>
+      <div className="mt-3">
+        <p>Already registered? </p>
+        <button className="btn btn-success pb-0 pt-0">
+          {" "}
+          <Link to="/login" className="btn btn-link text-white">
+            Login
+          </Link>
+        </button>
+      </div>
     </div>
   );
 };

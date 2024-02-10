@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import BlogForm from './BlogForm';  // Assuming you have a BlogForm component
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import BlogForm from "./BlogForm";
+import { useParams } from "react-router-dom";
 
 const BlogUpdateForm = () => {
   const { blogId } = useParams();
@@ -11,10 +11,12 @@ const BlogUpdateForm = () => {
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/apis/blogs/${blogId}/`);
+        const response = await axios.get(
+          `https://medi-dep-bykw.vercel.app/apis/blogs/${blogId}/`
+        );
         setBlogData(response.data);
       } catch (error) {
-        console.error('Error fetching Blog Data:', error);
+        console.error("Error fetching Blog Data:", error);
       }
     };
 
@@ -23,16 +25,19 @@ const BlogUpdateForm = () => {
 
   const handleUpdateBlog = async (updatedData) => {
     try {
-      await axios.patch(`http://localhost:8000/apis/blogs/${blogId}/`, updatedData, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-        },
-      });
-      console.log('Blog updated successfully');
-      // Optionally, you can redirect or perform other actions after successful update
+      await axios.patch(
+        `https://medi-dep-bykw.vercel.app/apis/blogs/${blogId}/`,
+        updatedData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+      console.log("Blog updated successfully");
     } catch (error) {
-      console.error('Error updating blog:', error);
+      console.error("Error updating blog:", error);
     }
   };
 

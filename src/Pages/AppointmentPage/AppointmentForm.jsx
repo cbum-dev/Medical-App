@@ -1,40 +1,36 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import React, { useState } from "react";
+import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
 
 const AppointmentForm = () => {
   const [formData, setFormData] = useState({
-    datetime: '',
-    problem: '',
+    date: "",
+    time: "",
+    problem: "",
   });
+
   const { providerId } = useParams();
-  console.log(providerId)
-  const getUserIdFromToken = () => {
-    // Implement logic to extract user ID from the token
-    // For example, decode the JWT token and get the user ID
-    return 'user_id_from_token';
-  };
+  const navigate = useNavigate();
+
+  const getUserIdFromToken = () => "user_id_from_token";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem('access_token');
+      const token = localStorage.getItem("access_token");
       if (!token) {
-        // Handle the case where the token is not available
-        console.error('Authentication token not found');
+        console.error("Authentication token not found");
         return;
       }
 
-      // Use the getUserIdFromToken function to get the user ID
       const userId = getUserIdFromToken();
 
-      // Make the POST request
       await axios.post(
-        'http://localhost:8000/api/appointments/create/',
+        "https://medi-dep-bykw.vercel.app/api/appointments/create/",
         {
           user: userId,
-          appointment_datetime: formData.datetime,
+          appointment_datetime: `${formData.date}T${formData.time}`,
           problem: formData.problem,
           healthcare_provider: providerId,
         },
@@ -45,9 +41,13 @@ const AppointmentForm = () => {
         }
       );
 
-      console.log('Appointment created successfully');
+      console.log("Appointment created successfully");
+
+      navigate("/book");
     } catch (error) {
-      console.error('Error creating appointment:', error);
+      console.error("Error creating appointment:", error);
+      alert("Error! Try Again. ");
+      navigate("/providers");
     }
   };
 
@@ -59,28 +59,43 @@ const AppointmentForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Datetime:
+    <form onSubmit={handleSubmit} className="my-4">
+      <div className="mb-3">
+        <label className="form-label">Date:</label>
         <input
           type="date"
-          name="datetime"
-          value={formData.datetime}
+          name="date"
+          value={formData.date}
           onChange={handleChange}
+          className="form-control"
+          required
         />
-      </label>
-      <br />
-      <label>
-        Problem:
+      </div>
+      <div className="mb-3">
+        <label className="form-label">Time:</label>
+        <input
+          type="time"
+          name="time"
+          value={formData.time}
+          onChange={handleChange}
+          className="form-control"
+          required
+        />
+      </div>
+      <div className="mb-3">
+        <label className="form-label">Problem:</label>
         <input
           type="text"
           name="problem"
           value={formData.problem}
           onChange={handleChange}
+          className="form-control"
+          required
         />
-      </label>
-      <br />
-      <button type="submit">Submit</button>
+      </div>
+      <button type="submit" className="btn btn-primary">
+        Submit
+      </button>
     </form>
   );
 };

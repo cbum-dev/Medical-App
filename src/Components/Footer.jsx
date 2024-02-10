@@ -1,15 +1,22 @@
-// Footer.jsx
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-// import './style.css'; // Import your custom styles
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer style={{backgroundColor : '#0a0f3d'}} className="sticky-sm-bottom  text-white text-center py-2 ">
+    <footer className="fixed-bottom bg-dark text-white text-center py-2">
       <div className="container">
-        <p>&copy; 2023 MedTalk. All rights reserved.</p>
+        <p>&copy; {currentYear} MedTalk. All rights reserved.</p>
       </div>
+      <style>
+        {`
+          body {
+            padding-bottom: 60px; /* Adjust the value to match the height of your footer */
+             
+          }
+        `}
+      </style>
     </footer>
   );
 };

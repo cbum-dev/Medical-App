@@ -1,4 +1,3 @@
-// ProviderProfile.js
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
@@ -12,7 +11,7 @@ const ProviderProfile = () => {
     const fetchProvider = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/providers/${providerId}/`
+          `https://medi-dep-bykw.vercel.app/providers/${providerId}/`
         );
         setProvider(response.data);
       } catch (error) {
@@ -23,18 +22,15 @@ const ProviderProfile = () => {
     fetchProvider();
   }, [providerId]);
 
-  // Check if provider is available
   if (!provider) {
     return <p>Loading...</p>;
   }
 
-  // const name = provider.name[0].toUpperCase() + provider.name.substring(1);
-
   return (
-
     <div>
-      <div className="card-container">
-        {provider.map(provider => (
+      <h1 className="text-center my-3 text-white display-6">Provider Profile</h1>
+      <div className="card-container mx-2">
+        {provider.map((provider) => (
           <FullProfile key={provider.user} provider={provider} />
         ))}
       </div>
